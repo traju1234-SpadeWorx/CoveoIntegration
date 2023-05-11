@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "coveo-feature-stories-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/coveoFeatureStories/CoveoFeatureStoriesWebPart.js",
+          "manifest": "./src/webparts/coveoFeatureStories/CoveoFeatureStoriesWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CoveoFeatureStoriesWebPartStrings": "lib/webparts/coveoFeatureStories/loc/{locale}.js"
+  }
+}

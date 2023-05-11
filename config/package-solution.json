@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "coveo-integration-client-side-solution",
+    "id": "6b1185ba-a2cd-497b-9620-df3a2756619f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.16.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "CoveoIntegration description"
+      },
+      "longDescription": {
+        "default": "CoveoIntegration description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "coveo-integration Feature",
+        "description": "The feature that activates elements of the coveo-integration solution.",
+        "id": "2b4b2bec-a278-4ff3-a687-02f6455d0880",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/coveo-integration.sppkg"
+  }
+}
