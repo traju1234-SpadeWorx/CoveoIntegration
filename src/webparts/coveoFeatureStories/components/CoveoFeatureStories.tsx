@@ -1,43 +1,69 @@
 import * as React from 'react';
-import styles from './CoveoFeatureStories.module.scss';
+//import styles from './CoveoFeatureStories.module.scss';
 import { ICoveoFeatureStoriesProps } from './ICoveoFeatureStoriesProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+
+//import SearchBox from "../../../Components/SearchBox";
+import QuerySummary from "../../../Components/QuerySummary";
+import ResultList from "../../../Components/ResultList";
+import Pager from "../../../Components/Pager";
+import Facet from "../../../Components/Facet";
+import ResultsPerPage from "../../../Components/ResultsPerPage";
+//import FacetBreadcrumbs from "../../../Components/FacetBreadcrumbs";
+import { loadSearchAnalyticsActions, loadSearchActions } from "@coveo/headless";
+import headlessEngine from "../../../Components/Engine";
+import Sort from "../../../Components/Sort";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export default class CoveoFeatureStories extends React.Component<ICoveoFeatureStoriesProps, {}> {
-  public render(): React.ReactElement<ICoveoFeatureStoriesProps> {
-    const {
-      description,
-      isDarkTheme,
-      environmentMessage,
-      hasTeamsContext,
-      userDisplayName
-    } = this.props;
 
+  public async componentDidMount() {
+    const { logInterfaceLoad } = loadSearchAnalyticsActions(headlessEngine);
+    const { executeSearch } = loadSearchActions(headlessEngine);
+    headlessEngine.dispatch(executeSearch(logInterfaceLoad()));
+    
+  }
+  public render(): React.ReactElement<ICoveoFeatureStoriesProps> {    
     return (
-      <section className={`${styles.coveoFeatureStories} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.welcome}>
-          <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
-        </div>
-        <div>
-          <h3>Welcome to SharePoint Framework!</h3>
-          <p>
-            The SharePoint Framework (SPFx) is a extensibility model for Microsoft Viva, Microsoft Teams and SharePoint. It&#39;s the easiest way to extend Microsoft 365 with automatic Single Sign On, automatic hosting and industry standard tooling.
-          </p>
-          <h4>Learn more about SPFx development:</h4>
-          <ul className={styles.links}>
-            <li><a href="https://aka.ms/spfx" target="_blank" rel="noreferrer">SharePoint Framework Overview</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-graph" target="_blank" rel="noreferrer">Use Microsoft Graph in your solution</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-teams" target="_blank" rel="noreferrer">Build for Microsoft Teams using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-viva" target="_blank" rel="noreferrer">Build for Microsoft Viva Connections using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-store" target="_blank" rel="noreferrer">Publish SharePoint Framework applications to the marketplace</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-api" target="_blank" rel="noreferrer">SharePoint Framework API reference</a></li>
-            <li><a href="https://aka.ms/m365pnp" target="_blank" rel="noreferrer">Microsoft 365 Developer Community</a></li>
-          </ul>
-        </div>
-      </section>
-    );
+      <Container maxWidth="xl">
+        <Box my={3}>
+          <Typography align="center" color="text.primary" variant="h2" component="h2" gutterBottom>
+            Coveo Headless + Material UI
+          </Typography>
+        </Box>
+
+        {/* <SearchBox /> */}
+        <Box my={1}>
+          {/* <FacetBreadcrumbs /> */}
+          <Grid container>
+            <Grid item xs={4}>
+              <Facet title="Brand" field="ec_brand" />
+              <Facet title="Frequencies" field="eng_frequencies" />
+              <Facet title="Processor" field="eng_processor" />
+              <Facet title="Store name" field="store_name" />
+            </Grid>
+            <Grid item xs={8}>
+              <Grid container my={3} alignItems="center">
+                <Grid item xs={8}>
+                  <QuerySummary />
+                </Grid>
+                <Grid item xs={4}>
+                  <Sort />
+                </Grid>
+              </Grid>
+              <ResultList />
+              <Box my={4}>
+                <Grid container alignItems="center">
+                  <Grid item xs={6}>
+                    <Pager />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ResultsPerPage />
+                  </Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>);    
   }
 }
