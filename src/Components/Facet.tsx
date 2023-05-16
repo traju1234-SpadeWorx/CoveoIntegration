@@ -45,7 +45,11 @@ export default class Facet extends React.Component<IFacetProps, {}> {
     };
   }
   componentDidMount() {
-    this.headlessFacet.subscribe(() => this.updateState());
+    setInterval(  
+      this.headlessFacet.subscribe(() => this.updateState()),
+      1000  
+    );  
+   
   }
 
   componentWillUnmount() {

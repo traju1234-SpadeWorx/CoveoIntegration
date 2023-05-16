@@ -43,7 +43,8 @@ export default class Pager extends React.Component {
         <Typography gutterBottom>Current page</Typography>
         <Pagination
           page={this.page}
-          count={this.count}
+          // count={this.count}
+          count={5}
           onChange={(e, page) => this.setPage(page)}
           variant="outlined"
           color="primary"

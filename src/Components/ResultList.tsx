@@ -12,7 +12,6 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Rating,
   Typography,
 } from "@mui/material";
 
@@ -22,6 +21,7 @@ export default class ResultList extends React.Component {
 
   constructor(props: any) {
     super(props);
+    console.log("props", this.props.children);
 
     this.headlessResultList = buildResultList(headlessEngine, {
       options: {
@@ -41,7 +41,7 @@ export default class ResultList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.headlessResultList.subscribe(() => {});
+    this.headlessResultList.subscribe(() => { });
   }
 
   render() {
@@ -49,41 +49,92 @@ export default class ResultList extends React.Component {
       style: "currency",
       currency: "USD",
     });
+
     return (
       <Grid container spacing={2}>
         {this.state.results.map((result: Result) => {
-          return (
-            <Grid
-              item
-              xs={4}
-              display="grid"
-              alignItems="stretch"
-              key={result.uniqueId}
-            >
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={`${result.raw.ec_image!}`}
-                />
-                <CardContent>
-                  <Typography variant="h5">
-                    {<ResultLink result={result} />}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {result.excerpt}
-                  </Typography>
-                  <Typography variant="h6" color="text.primary">
-                    {formatter.format(result.raw.ec_price as number)}
-                  </Typography>
-                  <Rating
-                    value={Math.round(result.raw.ec_rating as number)}
-                    readOnly
+
+          if (this.props) {
+            return (
+              <Grid
+                item
+                xs={4}
+                display="grid"
+                alignItems="stretch"
+                key={result.uniqueId}
+              >
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={`${result.raw.ec_image!}`}
                   />
-                </CardContent>
-              </Card>
-            </Grid>
-          );
+                  <CardContent>
+                    <Typography variant='subtitle1' fontWeight={600}>
+                      {<ResultLink result={result} />}
+                    </Typography>
+                    <Typography variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '3',
+                        WebkitBoxOrient: 'vertical',
+                      }}
+                    >
+                      {result.excerpt}
+                    </Typography>
+                    <Typography variant="h6" color="text.primary">
+                      {formatter.format(result.raw.ec_price as number)}
+                    </Typography>
+                    
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          } else {
+            return (
+              <Grid
+                item
+                xs={4}
+                display="grid"
+                alignItems="stretch"
+                key={result.uniqueId}
+              >
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={`${result.raw.ec_image!}`}
+                  />
+                  <CardContent>
+                    <Typography variant='subtitle1' fontWeight={600}>
+                      {<ResultLink result={result} />}
+                    </Typography>
+                    <Typography variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '3',
+                        WebkitBoxOrient: 'vertical',
+                      }}
+                    >
+                      {result.excerpt}
+                    </Typography>
+                    <Typography variant="h6" color="text.primary">
+                      {formatter.format(result.raw.ec_price as number)}
+                    </Typography>
+                    
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          }
+
+
         })}
       </Grid>
     );
