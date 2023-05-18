@@ -14,9 +14,6 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
-  ThemeProvider,
-  checkboxClasses,
-  createTheme,
 } from "@mui/material";
 
 
@@ -24,21 +21,6 @@ export interface IFacetProps {
   title: string;
   field: string;
 }
-
-export const muiTheme = createTheme({
-  components: {
-    MuiCheckbox: {
-      styleOverrides: {
-        root: {
-          color: 'primary',
-          [`&.${checkboxClasses.checked}`]: {
-            color: 'red',
-          },
-        },
-      },
-    },
-  },
-});
 
 export default class Facet extends React.Component<IFacetProps, {}> {
   private headlessFacet: FacetType;
@@ -87,7 +69,6 @@ export default class Facet extends React.Component<IFacetProps, {}> {
 
   getFacetValues() {
     return this.state.values.map((value: FacetValue) => (
-      <ThemeProvider theme={muiTheme}>
         <Box padding={0} key={value.value}>
           <FormControlLabel
             label={`${value.value} (${value.numberOfResults})`}
@@ -100,8 +81,7 @@ export default class Facet extends React.Component<IFacetProps, {}> {
             }
           />
         </Box>
-      </ThemeProvider>
-
+      
     ));
   }
 
@@ -134,7 +114,7 @@ export default class Facet extends React.Component<IFacetProps, {}> {
 
   render() {
     return (
-      <Box mt={5} mr={3} p={1}>
+      <Box mt={5} mr={3} p={1} sx={{display:'flex', alignItems:"flex-start", flexDirection:'column'}}>
         <FormControl component="fieldset">
           <Box mb={1}>
             <FormLabel component="legend" color="error">

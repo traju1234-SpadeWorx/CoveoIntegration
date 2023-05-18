@@ -29,7 +29,6 @@ export default class ResultLink extends React.Component<ResultLinkProps, {}> {
         href={this.result.clickUri}
         target="_blank"
         onClick={() => this.interactiveResult.select()}
-        color="error"
         underline='none'
       >
         {this.result.title}

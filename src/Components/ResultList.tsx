@@ -26,6 +26,7 @@ export default class ResultList extends React.Component<IResultListProps> {
 
   constructor(props: any) {
     super(props);
+    console.log("props", props);
 
     this.headlessResultList = buildResultList(headlessEngine, {
       options: {
@@ -89,7 +90,7 @@ export default class ResultList extends React.Component<IResultListProps> {
                       >
                         {result.excerpt}
                       </Typography>
-                      <Typography variant="subtitle1" color="text.primary">
+                      <Typography variant="subtitle1" sx={{ color: '#333' }}>
                         {formatter.format(result.raw.ec_price as number)}
                       </Typography>
 
@@ -112,11 +113,11 @@ export default class ResultList extends React.Component<IResultListProps> {
                 <Card>
                   <CardMedia
                     component="img"
-                    sx={{ padding: 1, width: '140px' }}
+                    sx={{ padding: 1, width: '140px', margin: '0 auto' }}
                     image={`${result.raw.ec_image!}`}
                   />
                   <CardContent>
-                    <Typography variant='subtitle1' fontWeight={600}>
+                    <Typography variant='subtitle1' fontWeight={400}>
                       {<ResultLink result={result} />}
                     </Typography>
                     <Typography variant="body2"
@@ -131,7 +132,7 @@ export default class ResultList extends React.Component<IResultListProps> {
                     >
                       {result.excerpt}
                     </Typography>
-                    <Typography variant="subtitle1" color="text.primary">
+                    <Typography variant="subtitle1" sx={{ color: '#333' }}>
                       {formatter.format(result.raw.ec_price as number)}
                     </Typography>
 
