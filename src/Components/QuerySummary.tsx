@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import * as React from 'react';
+import React from 'react';
 import {
   buildQuerySummary,
   QuerySummary as QuerySummaryType,

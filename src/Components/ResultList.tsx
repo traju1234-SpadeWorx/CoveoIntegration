@@ -11,8 +11,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
-  Rating,
+  Grid, 
   Typography,
 } from "@mui/material";
 
@@ -25,7 +24,7 @@ export default class ResultList extends React.Component {
 
     this.headlessResultList = buildResultList(headlessEngine, {
       options: {
-        fieldsToInclude: ["ec_image", "ec_price", "ec_rating"],
+        fieldsToInclude: ["BannerImageUrl", "Title", "author"],
       },
     });
 
@@ -45,10 +44,10 @@ export default class ResultList extends React.Component {
   }
 
   render() {
-    const formatter = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
+    // const formatter = new Intl.NumberFormat("en-US", {
+    //   style: "currency",
+    //   currency: "USD",
+    // });
     return (
       <Grid container spacing={2}>
         {this.state.results.map((result: Result) => {
@@ -64,22 +63,18 @@ export default class ResultList extends React.Component {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={`${result.raw.ec_image!}`}
+                  image={`${result.raw.BannerImageUrl!}`}
                 />
                 <CardContent>
                   <Typography variant="h5">
                     {<ResultLink result={result} />}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {result.excerpt}
+                    {result.raw.description}
                   </Typography>
                   <Typography variant="h6" color="text.primary">
-                    {formatter.format(result.raw.ec_price as number)}
-                  </Typography>
-                  <Rating
-                    value={Math.round(result.raw.ec_rating as number)}
-                    readOnly
-                  />
+                    {result.raw.author}                    
+                  </Typography>                  
                 </CardContent>
               </Card>
             </Grid>
