@@ -8,6 +8,7 @@ import {
 } from "@coveo/headless";
 import headlessEngine from "../Components/Engine";
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
@@ -15,13 +16,16 @@ import {
   Typography,
 } from "@mui/material";
 
-export default class ResultList extends React.Component {
+interface IResultListProps {
+  view?: string;
+}
+
+export default class ResultList extends React.Component<IResultListProps> {
   private headlessResultList: ResultListType;
   state: ResultListState;
 
   constructor(props: any) {
     super(props);
-    console.log("props", this.props.children);
 
     this.headlessResultList = buildResultList(headlessEngine, {
       options: {
@@ -53,43 +57,44 @@ export default class ResultList extends React.Component {
     return (
       <Grid container spacing={2}>
         {this.state.results.map((result: Result) => {
-
-          if (this.props) {
+          if (this.props.view === "list") {
             return (
               <Grid
                 item
-                xs={4}
+                xs={12}
                 display="grid"
                 alignItems="stretch"
                 key={result.uniqueId}
               >
-                <Card>
+                <Card sx={{ display: 'flex', alignItems: 'center' }}>
                   <CardMedia
                     component="img"
-                    height="140"
+                    sx={{ padding: 1, width: '140px', height: 'fit-content' }}
                     image={`${result.raw.ec_image!}`}
                   />
-                  <CardContent>
-                    <Typography variant='subtitle1' fontWeight={600}>
-                      {<ResultLink result={result} />}
-                    </Typography>
-                    <Typography variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitLineClamp: '3',
-                        WebkitBoxOrient: 'vertical',
-                      }}
-                    >
-                      {result.excerpt}
-                    </Typography>
-                    <Typography variant="h6" color="text.primary">
-                      {formatter.format(result.raw.ec_price as number)}
-                    </Typography>
-                    
-                  </CardContent>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flex: '1 0 auto' }}>
+                      <Typography variant='subtitle1' fontWeight={400}>
+                        {<ResultLink result={result} />}
+                      </Typography>
+                      <Typography variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: '3',
+                          WebkitBoxOrient: 'vertical',
+                        }}
+                      >
+                        {result.excerpt}
+                      </Typography>
+                      <Typography variant="subtitle1" color="text.primary">
+                        {formatter.format(result.raw.ec_price as number)}
+                      </Typography>
+
+                    </CardContent>
+                  </Box>
                 </Card>
               </Grid>
             );
@@ -97,15 +102,17 @@ export default class ResultList extends React.Component {
             return (
               <Grid
                 item
-                xs={4}
+                xs={12}
+                sm={6}
+                md={4}
                 display="grid"
                 alignItems="stretch"
-                key={result.uniqueId}
+              // key={result.uniqueId}
               >
                 <Card>
                   <CardMedia
                     component="img"
-                    height="140"
+                    sx={{ padding: 1, width: '140px' }}
                     image={`${result.raw.ec_image!}`}
                   />
                   <CardContent>
@@ -124,15 +131,17 @@ export default class ResultList extends React.Component {
                     >
                       {result.excerpt}
                     </Typography>
-                    <Typography variant="h6" color="text.primary">
+                    <Typography variant="subtitle1" color="text.primary">
                       {formatter.format(result.raw.ec_price as number)}
                     </Typography>
-                    
+
                   </CardContent>
                 </Card>
               </Grid>
             );
           }
+
+
 
 
         })}

@@ -77,7 +77,7 @@ export default class Sort extends React.Component {
 
   render() {
     return (
-      <FormControl fullWidth>
+      <FormControl fullWidth size="small">
         <InputLabel id="sortby">Sort by</InputLabel>
         <Select
           labelId="sortby"

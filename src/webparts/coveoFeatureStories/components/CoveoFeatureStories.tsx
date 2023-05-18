@@ -36,13 +36,14 @@ export default class CoveoFeatureStories extends React.Component<ICoveoFeatureSt
   }
 
   handleChange = (event: any, nextView: any) => {
-    this.setState(() => {
-      return {
-        ...this.state,
-        view: nextView,
-      };
-    });
-
+    if (nextView !== null) {
+      this.setState(() => {
+        return {
+          ...this.state,
+          view: nextView,
+        };
+      });
+    }
   };
 
   public render(): React.ReactElement<ICoveoFeatureStoriesProps> {
