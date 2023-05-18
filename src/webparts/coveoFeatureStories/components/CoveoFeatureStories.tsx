@@ -11,20 +11,41 @@ import ResultsPerPage from "../../../Components/ResultsPerPage";
 import { loadSearchAnalyticsActions, loadSearchActions } from "@coveo/headless";
 //import headlessEngine from "../../../Components/Engine";
 import Sort from "../../../Components/Sort";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import { buildSearchEngine, buildContext, getOrganizationEndpoints} from "@coveo/headless";  
 import { HttpClient, HttpClientResponse} from '@microsoft/sp-http';
 import { default as pnp } from "sp-pnp-js";
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-export default class CoveoFeatureStories extends React.Component<ICoveoFeatureStoriesProps, {}> {
+
+export interface ICoveoFeatureStoriesPropsState{
+  viewType:string;  
+}
+export default class CoveoFeatureStories extends React.Component<ICoveoFeatureStoriesProps, ICoveoFeatureStoriesPropsState> {
   
-  constructor(props: ICoveoFeatureStoriesProps) {
+  constructor(props: ICoveoFeatureStoriesProps, state: ICoveoFeatureStoriesPropsState) {
     super(props);
+    this.changeResultView = this.changeResultView.bind(this);
     //Setup the context to PnPjs
     pnp.setup({
       spfxContext: this.props.context,
     });
+    this.state = {
+      viewType:"List"      
+    };
   }
+  private changeResultView(event: any, nextView: any) {
+    if (nextView !== null) {
+      this.setState(() => {
+        return {
+          ...this.state,
+          viewType: nextView,
+        };
+      });
+    }
+  }
+
   public async componentDidMount() {
      //Call Azure Token Service and Get Token
      this.GetCoveoTokenAndResults();     
@@ -72,12 +93,7 @@ export default class CoveoFeatureStories extends React.Component<ICoveoFeatureSt
 
   public render(): React.ReactElement<ICoveoFeatureStoriesProps> {    
     return (
-      <Container maxWidth="xl">
-        <Box my={3}>
-          <Typography align="center" color="text.primary" variant="h2" component="h2" gutterBottom>
-            Coveo Headless + Material UI With Customized Results
-          </Typography>
-        </Box>
+      <Container maxWidth="xl">       
         <SearchBox />
         <Box my={1}>
           {/* <FacetBreadcrumbs /> */}
@@ -93,11 +109,25 @@ export default class CoveoFeatureStories extends React.Component<ICoveoFeatureSt
                 <Grid item xs={8}>
                   <QuerySummary />
                 </Grid>
+
+                <Grid item xs={12} sm={4} md={4} marginY={2}>
+                  <Stack direction="row" spacing={2} justifyContent="center">
+                    <ToggleButtonGroup value={this.state.viewType} exclusive onChange={this.changeResultView} color='error' size='small'>
+                      <ToggleButton value="list" aria-label="list">
+                        <ViewListIcon />
+                      </ToggleButton>
+                      <ToggleButton value="module" aria-label="module">
+                        <ViewModuleIcon />
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </Stack>
+                </Grid>
+
                 <Grid item xs={4}>
                   <Sort />
                 </Grid>
               </Grid>
-              <ResultList />
+              <ResultList {...this.state}/>
               <Box my={4}>
                 <Grid container alignItems="center">
                   <Grid item xs={6}>

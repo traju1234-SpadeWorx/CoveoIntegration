@@ -8,6 +8,7 @@ import {
 } from "@coveo/headless";
 import headlessEngine from "../Components/Engine";
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
@@ -15,7 +16,11 @@ import {
   Typography,
 } from "@mui/material";
 
-export default class ResultList extends React.Component {
+export interface ResultListProps{
+  viewType?:string;  
+}
+
+export default class ResultList extends React.Component<ResultListProps> {
   private headlessResultList: ResultListType;
   state: ResultListState;
 
@@ -51,10 +56,50 @@ export default class ResultList extends React.Component {
     return (
       <Grid container spacing={2}>
         {this.state.results.map((result: Result) => {
+          if(this.props.viewType.toLowerCase() === "list") {
           return (
             <Grid
               item
-              xs={4}
+              xs={12}
+              display="grid"
+              alignItems="stretch"
+              key={result.uniqueId}
+            >
+              <Card sx={{ display: 'flex', alignItems: 'center' }}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={`${result.raw.BannerImageUrl!}`}
+                />
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography variant='subtitle1' fontWeight={400}>
+                      {<ResultLink result={result} />}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: '3',
+                          WebkitBoxOrient: 'vertical',
+                        }}>
+                      {result.raw.description}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.primary">
+                      {result.raw.author}                    
+                    </Typography>                  
+                  </CardContent>
+                </Box>
+              </Card>
+            </Grid>
+          );
+        } else {
+          return (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
               display="grid"
               alignItems="stretch"
               key={result.uniqueId}
@@ -66,19 +111,26 @@ export default class ResultList extends React.Component {
                   image={`${result.raw.BannerImageUrl!}`}
                 />
                 <CardContent>
-                  <Typography variant="h5">
+                  <Typography variant='subtitle1' fontWeight={400}>
                     {<ResultLink result={result} />}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" sx={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: '3',
+                          WebkitBoxOrient: 'vertical',
+                        }}>
                     {result.raw.description}
                   </Typography>
-                  <Typography variant="h6" color="text.primary">
+                  <Typography variant="subtitle1" color="text.primary">
                     {result.raw.author}                    
                   </Typography>                  
                 </CardContent>
               </Card>
             </Grid>
           );
+        }
         })}
       </Grid>
     );
