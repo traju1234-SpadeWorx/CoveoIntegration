@@ -5,6 +5,7 @@ import {
   ResultList as ResultListType,
   Result,
   ResultListState,
+  buildUrlManager,
 } from "@coveo/headless";
 import headlessEngine from "../Components/Engine";
 import {
@@ -23,10 +24,11 @@ interface IResultListProps {
 export default class ResultList extends React.Component<IResultListProps> {
   private headlessResultList: ResultListType;
   state: ResultListState;
+  urlManager: any;
 
   constructor(props: any) {
     super(props);
-    console.log("props", props);
+    // console.log("props", props);
 
     this.headlessResultList = buildResultList(headlessEngine, {
       options: {
@@ -39,6 +41,23 @@ export default class ResultList extends React.Component<IResultListProps> {
 
   componentDidMount() {
     this.headlessResultList.subscribe(() => this.updateState());
+
+    
+      // Identify the hash fragment
+      const fragment = window.location.hash.slice(1);
+
+      // Build the UrlManager controller with said fragment.
+      this.urlManager = buildUrlManager(headlessEngine, {
+        initialState: { fragment },
+      });
+  
+     
+  
+      // Synchronize the has with the latest fragment.
+      window.addEventListener('hashchange', () => {
+        const fragment = window.location.hash.slice(1);
+        this.urlManager.synchronize(fragment);
+      });
   }
 
   updateState() {
@@ -47,6 +66,12 @@ export default class ResultList extends React.Component<IResultListProps> {
 
   componentWillUnmount() {
     this.headlessResultList.subscribe(() => { });
+
+     // Update the state
+     this.urlManager.subscribe(() => {
+      const hash = `#${this.urlManager.state.fragment}`;
+      history.pushState(null, document.title, hash);
+    });
   }
 
   render() {

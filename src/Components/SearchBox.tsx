@@ -44,6 +44,7 @@ export default class SearchBox extends React.Component {
   render() {
     return (
       <Autocomplete
+        sx={{ visibility: 'hidden' }}
         freeSolo
         disableClearable
         inputValue={this.state.value}

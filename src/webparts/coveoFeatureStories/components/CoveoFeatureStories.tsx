@@ -2,7 +2,7 @@ import * as React from 'react';
 //import styles from './CoveoFeatureStories.module.scss';
 import { ICoveoFeatureStoriesProps } from './ICoveoFeatureStoriesProps';
 
-// import SearchBox from "../../../Components/SearchBox";
+import SearchBox from "../../../Components/SearchBox";
 import QuerySummary from "../../../Components/QuerySummary";
 import ResultList from "../../../Components/ResultList";
 import Pager from "../../../Components/Pager";
@@ -96,7 +96,7 @@ export default class CoveoFeatureStories extends React.Component<ICoveoFeatureSt
         <Container maxWidth="xl">
 
 
-          {/* <SearchBox /> */}
+          <SearchBox />
           <Box my={1}>
             {/* <FacetBreadcrumbs /> */}
             <Grid container>

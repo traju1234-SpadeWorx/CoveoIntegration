@@ -93,6 +93,8 @@ export default class Facet extends React.Component<IFacetProps, {}> {
           this.showMore();
         }}
         size='small'
+        variant='text'
+        color='primary'
       >
         Show More
       </Button>
@@ -106,6 +108,8 @@ export default class Facet extends React.Component<IFacetProps, {}> {
           this.showLess();
         }}
         size='small'
+        variant='text'
+        color='primary'
       >
         Show Less
       </Button>
