@@ -10,7 +10,7 @@ import * as strings from 'CoveoFeatureStoriesWebPartStrings';
 import CoveoFeatureStories from './components/CoveoFeatureStories';
 import { ICoveoFeatureStoriesProps } from './components/ICoveoFeatureStoriesProps';
 
-import CoveoService from '../../common/services/CoveoServices';
+import CoveoServices from '../../common/services/CoveoServices';
 import { ICurrentLoginInfo } from '../../common/modal/ICurrentLoginInfo';
 import { ICoveoConfig } from '../../common/modal/ICoveoConfig';
 
@@ -26,7 +26,7 @@ export default class CoveoFeatureStoriesWebPart extends BaseClientSideWebPart<IC
   public onInit(): Promise<void> {
     return super.onInit().then(async _ => {      
       //Intiate CoveoService Class Object
-      CoveoService.initialize(this.context);
+      CoveoServices.initialize(this.context);
     });
   }
 
@@ -49,7 +49,7 @@ export default class CoveoFeatureStoriesWebPart extends BaseClientSideWebPart<IC
 
   public async call(): Promise<void> {    
     //Get Current Logged User Info
-    await CoveoService.Instance.GetCurrentUserInfo().then(results => {
+    await CoveoServices.Instance.GetCurrentUserInfo().then(results => {
       this.CurrentLoginInfo = results;
       Promise.resolve();
     }).catch(err => {
@@ -57,7 +57,7 @@ export default class CoveoFeatureStoriesWebPart extends BaseClientSideWebPart<IC
     });
 
      //Get Azure Function App Details
-     await CoveoService.Instance.getCoveoConfigDetails().then(results => {
+     await CoveoServices.Instance.getCoveoConfigDetails().then(results => {
       this.CoveoConfigDetails = results;    
     }).catch(err => {
       console.error("Error occured in Coveo Search Result webpar : Call():getCoveoConfigDetails" + err);

@@ -4,6 +4,9 @@ import '@pnp/sp/webs';
 import { sp } from "@pnp/sp/presets/all";
 import { ICurrentLoginInfo } from '../../common/modal/ICurrentLoginInfo';
 import { ICoveoConfig } from '../../common/modal/ICoveoConfig';
+import { ICoveoTokenDetails } from '../../common/modal/ICoveoTokenDetails';
+
+import { HttpClient, HttpClientResponse} from '@microsoft/sp-http';
 
 export class CurrentLoginInfo implements ICurrentLoginInfo {   
     public UserEmail: string;    
@@ -14,8 +17,14 @@ export class CoveoConfigDetails implements ICoveoConfig {
     public APIKey:string;
     public AzureFunctionURL:string;   
 }
-export default class CoveoService {  
-    public static _instance: CoveoService;
+
+export class CoveoTokenDetails implements ICoveoTokenDetails {   
+    public OrgID: string;   
+    public CoveoToken:string;  
+}
+
+export default class CoveoServices {  
+    public static _instance: CoveoServices;
     //private spfxAadClient: AadHttpClient; 
 
     public constructor(private ctx: any) {        
@@ -54,5 +63,37 @@ export default class CoveoService {
             CoveoConfigListItem.AzureFunctionURL = item.AzureFunctionURL;
         }
         return CoveoConfigListItem;
+    }
+
+    public async GetCoveoTokenAndResults(UserEmail:string, OrgID:string, APIKey:string, AzureFunctionURL:string):Promise<CoveoTokenDetails>
+    {
+        var strCoveoToken: string = "";
+        var currCoveoTokenDetails: ICoveoTokenDetails = new CoveoTokenDetails();
+        const requestHeaders: Headers = new Headers();
+        requestHeaders.append("Content-type", "application/json");
+        const postOptions : RequestInit = {
+        headers: requestHeaders,
+            body: `{\r\n    Email: '${UserEmail}',\r\n    OrgID: '${OrgID}', \r\n    APIKey: '${APIKey}' \r\n}`,
+            method: "POST"  
+        };    
+        //Azure Function API call 
+        this.ctx.httpClient.post(AzureFunctionURL, HttpClient.configurations.v1, postOptions).then((response: HttpClientResponse) => {
+            response.json().then((responseJSON: JSON) => {
+                strCoveoToken = JSON.stringify(responseJSON);
+                if (response.ok) {
+                    strCoveoToken =  JSON.parse(JSON.stringify(responseJSON).trim()).token;
+                    console.log("From Service     "+strCoveoToken);
+                    currCoveoTokenDetails.OrgID = OrgID;
+                    currCoveoTokenDetails.CoveoToken = strCoveoToken;
+                } else {
+                    console.log("Response Not Received");
+                }         
+            })
+            .catch ((response: any) => {
+                let errMsg: string = `WARNING - error when calling URL ${AzureFunctionURL}. Error = ${response.message}`;
+                console.log(errMsg);       
+            });      
+        });
+        return currCoveoTokenDetails;    
     }
 }

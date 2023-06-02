@@ -14,9 +14,7 @@ export default class QuerySummary extends React.Component {
 
   constructor(props: any) {
     super(props);
-
     this.headlessQuerySummary = buildQuerySummary(headlessEngine);
-
     this.state = this.headlessQuerySummary.state;
   }
 

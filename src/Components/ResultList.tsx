@@ -5,6 +5,7 @@ import {
   ResultList as ResultListType,
   Result,
   ResultListState,
+  buildUrlManager,
 } from "@coveo/headless";
 import headlessEngine from "../Components/Engine";
 import {
@@ -38,6 +39,25 @@ export default class ResultList extends React.Component<ResultListProps> {
 
   componentDidMount() {
     this.headlessResultList.subscribe(() => this.updateState());
+     // Identify the hash fragment
+     const fragment = window.location.hash.slice(1);
+
+     // Build the UrlManager controller with said fragment.
+     const urlManager = buildUrlManager(headlessEngine, {
+       initialState: { fragment },
+     });
+ 
+     // Update the state
+     urlManager.subscribe(() => {
+       const hash = `#${urlManager.state.fragment}`;
+       history.pushState(null, document.title, hash);
+     });
+ 
+     // Synchronize the has with the latest fragment.
+     window.addEventListener('hashchange', () => {
+       const fragment = window.location.hash.slice(1);
+       urlManager.synchronize(fragment);
+     });
   }
 
   updateState() {
@@ -53,6 +73,7 @@ export default class ResultList extends React.Component<ResultListProps> {
     //   style: "currency",
     //   currency: "USD",
     // });
+    //const onMediaFallback = event => event.target.src = "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg";
     return (
       <Grid container spacing={2}>
         {this.state.results.map((result: Result) => {
@@ -69,7 +90,7 @@ export default class ResultList extends React.Component<ResultListProps> {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={`${result.raw.BannerImageUrl!}`}
+                  image={`${result.raw.BannerImageUrl}`}                 
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <CardContent sx={{ flex: '1 0 auto' }}>
@@ -108,7 +129,7 @@ export default class ResultList extends React.Component<ResultListProps> {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={`${result.raw.BannerImageUrl!}`}
+                  image={`${result.raw.BannerImageUrl}`}
                 />
                 <CardContent>
                   <Typography variant='subtitle1' fontWeight={400}>
