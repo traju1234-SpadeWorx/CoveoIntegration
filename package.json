@@ -23,6 +23,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.0",
     "@pnp/sp": "^2.11.0",
+    "coveo-search-ui": "^2.10109.0",
     "office-ui-fabric-react": "^7.199.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",

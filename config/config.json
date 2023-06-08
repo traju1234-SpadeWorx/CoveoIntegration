@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/coveoFeatureStories/CoveoFeatureStoriesWebPart.manifest.json"
         }
       ]
+    },
+    "coveo-search-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/coveoSearch/CoveoSearchWebPart.js",
+          "manifest": "./src/webparts/coveoSearch/CoveoSearchWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "CoveoFeatureStoriesWebPartStrings": "lib/webparts/coveoFeatureStories/loc/{locale}.js"
+    "CoveoFeatureStoriesWebPartStrings": "lib/webparts/coveoFeatureStories/loc/{locale}.js",
+    "CoveoSearchWebPartStrings": "lib/webparts/coveoSearch/loc/{locale}.js"
   }
 }
